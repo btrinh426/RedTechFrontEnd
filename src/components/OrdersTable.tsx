@@ -99,7 +99,7 @@ const OrdersTable = () => {
 
   const handleDeleteOrder = () => {
     console.log(selectedRow[0]);
-    axios.delete(`https://localhost:7294/api/Order/${selectedRow}`)
+    axios.delete(`${process.env.SERVER_URL}/api/Order/${selectedRow}`)
       .then((res) => console.log(res.status))
       .catch((err) => console.log(err))
   };
