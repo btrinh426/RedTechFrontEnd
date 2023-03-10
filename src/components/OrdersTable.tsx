@@ -127,7 +127,7 @@ const OrdersTable = () => {
 
 
   useEffect(() => {
-    axios.get("https://localhost:7294/api/Order")
+    axios.get(`${process.env.SERVER_URL}/api/Order/`)
       .then((res) => setOrders(res.data))
       .catch((err) => console.log(err))
   }, []);
