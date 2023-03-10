@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Button, Modal, Box, MenuList, MenuItem } from '@mui/material';
+import { Button, Modal, Box, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add'
 import { DataGrid } from '@mui/x-data-grid';
@@ -20,8 +20,8 @@ interface MenuItems {
 }
 
 interface OrderItem {
-  customerName: string,
   orderType: string,
+  customerName: string,
   createdByUsername: string,
 }
 
@@ -43,9 +43,9 @@ const OrdersTable = () => {
   const [orders, setOrders] = useState<Orders[]>([]);
   const [selectedRow, setSelectedRow] = useState<string[]>([]);
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [orderType, setOrderType] = useState<string>("");
   const [customerName, setCustomerName] = useState<string>("");
   const [createdByUsername, setCreatedByUsername] = useState<string>("");
-  const [orderType, setOrderType] = useState<string>("");
   const [createOrder, setCreateOrder] = useState<OrderItem>();
   const [menuItems] = useState<MenuItems[]>(
     [
@@ -70,7 +70,7 @@ const OrdersTable = () => {
         name: "Transfer Order"
       },
     ]
-    )
+  )
     
     const columns: { field: string, headerName: string, width: number }[] = [
       { field: 'id', headerName: 'Order ID', width: 500 },
@@ -90,16 +90,31 @@ const OrdersTable = () => {
     
     const handleSubmitOrder = () => {
       setCreateOrder({
-        customerName: customerName!,
         orderType: orderType!,
+        customerName: customerName!,
         createdByUsername: createdByUsername!,
       })
-      console.log("hit");
+      console.log(createOrder);
+      axios({
+        method: 'post',
+        url: 'https://localhost:7294/api/Order/',
+        data: createOrder
+      })
+        .then((response) => {
+          if(response.data.success){
+            alert(response.data)
+          } else {
+            alert('something went wrong')
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     };
 
   const handleDeleteOrder = () => {
     console.log(selectedRow[0]);
-    axios.delete(`${process.env.SERVER_URL}/api/Order/${selectedRow}`)
+    axios.delete(`https://localhost:7294/api/Order/${selectedRow[0]}`)
       .then((res) => console.log(res.status))
       .catch((err) => console.log(err))
   };
@@ -119,15 +134,14 @@ const OrdersTable = () => {
     console.log(createdByUsername);
   };
 
-  const handleClickedMenuItem = (e: React.FormEvent<HTMLInputElement>) => {
-    setOrderType(e.currentTarget.id);
+  const handleOrderTypeMenu = (e : SelectChangeEvent) => {
+    setOrderType(e.target.value);
     console.log(orderType);
-    console.log('hit');
   };
 
 
   useEffect(() => {
-    axios.get(`${process.env.SERVER_URL}/api/Order/`)
+    axios.get(`https://localhost:7294/api/Order/`)
       .then((res) => setOrders(res.data))
       .catch((err) => console.log(err))
   }, []);
@@ -138,13 +152,28 @@ const OrdersTable = () => {
       <div style={{ height: 400, width: '100%' }}>
         <Button variant="contained" color="primary" startIcon={<DeleteIcon />} onClick={handleDeleteOrder}>DELETE SELECTED</Button>
         <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleCreateModal}>CREATE ORDER</Button>
+        <Box sx={{ minWidth: 50 }}>
+                <FormControl fullWidth>
+                  <InputLabel>Order Type</InputLabel>
+                  <Select
+                    id="orderTypeId"
+                    value={orderType}
+                    label="OrderTypeLabel"
+                    onChange={handleOrderTypeMenu}
+                  >
+                    {menuItems.map((item) => {
+                      return (<MenuItem id={item.id} key={item.id} value={item.id}>{item.name}</MenuItem>)
+                    })}
+                  </Select>
+                </FormControl>
+              </Box>
         <Modal 
           open={openModal}
           onClose={handleCloseModal}
           aria-labelledby="parent-modal-title"
           aria-describedby="parent-modal-description"
         >
-          <Box sx={{ ...style, width: 400 }}>
+          <Box sx={{ ...style }}>
             <h2 id="parent-modal-title">Create Order</h2>
             <div id="parent-modal-description">
             <form>
@@ -156,12 +185,21 @@ const OrdersTable = () => {
                 Created By:
                 <input type="text" name="createdByUsername" value={createdByUsername} onChange={handleCreatedBy} />
               </label>
-              <MenuList>
-                Order Type:
-                  {menuItems.map((item) => {
-                    return (<MenuItem id={item.id} key={item.id} onClick={() => handleClickedMenuItem}>{item.name}</MenuItem>)
-                  })}
-              </MenuList>
+              <Box sx={{ minWidth: 120 }}>
+                <FormControl fullWidth>
+                  <InputLabel>Order Type</InputLabel>
+                  <Select
+                    id="orderTypeId"
+                    value={orderType}
+                    label="OrderTypeLabel"
+                    onChange={handleOrderTypeMenu}
+                  >
+                    {menuItems.map((item) => {
+                      return (<MenuItem id={item.id} key={item.id} value={item.id}>{item.name}</MenuItem>)
+                    })}
+                  </Select>
+                </FormControl>
+              </Box>
               <Button onClick={handleSubmitOrder} variant="contained" color="primary" startIcon={<AddIcon />}>CREATE ORDER</Button>
             </form>
             </div>
