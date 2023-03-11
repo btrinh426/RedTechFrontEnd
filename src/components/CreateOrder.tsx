@@ -31,9 +31,7 @@ const style = {
   };
 
 export const CreateOrder: React.FC<Props> = ({ onSubmit, open, close }) => {
-
   return (
-
     <Modal
         open={open}
         onClose={close}
@@ -57,7 +55,6 @@ export const CreateOrder: React.FC<Props> = ({ onSubmit, open, close }) => {
                         <Button type="submit" variant="contained" color="primary" startIcon={<AddIcon />}>Create Order</Button>
                         <pre>{JSON.stringify(values, null, 2)}</pre>
                     </Form>
-
                 )}
             </Formik>
         </Box>
