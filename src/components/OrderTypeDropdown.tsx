@@ -1,62 +1,50 @@
 import React, { useState } from 'react';
 import { Box, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } from '@mui/material';
+import OrderTypes from '../json/OrderType.json';
 
 interface Props {
-
-}
+    setFilterOrderType: React.Dispatch<React.SetStateAction<string>>
+};
 
 interface MenuItems {
     id: string,
-    name: string
-  }
+    name: string,
+    value: string
+};
 
-export const OrderTypeDropdown: React.FC<Props> = () => {
-    
-    const [orderType, setOrderType] = useState<string>("");
-    const [menuItems] = useState<MenuItems[]>(
-        [
-          {
-            id: "standardOrder",
-            name: "Standard Order"
-          },
-          {
-            id: "purchaseOrder",
-            name: "Purchase Order"
-          },
-          {
-            id: "saleOrder",
-            name: "Sale Order"
-          },
-          {
-            id: "returnOrder",
-            name: "Return Order"
-          },
-          {
-            id: "transferOrder",
-            name: "Transfer Order"
-          },
-        ]
-      )
+const style = {
+  Button: {
+    // width: 400,
+    marginRight: "1rem",
+  },
+  // BigButton: {
+  //   width: 1000,
+  // }
+};
+
+export const OrderTypeDropdown: React.FC<Props> = ({ setFilterOrderType }) => {
+    const [orderType, setOrderType] = useState<string>("")
+    const [menuItems] = useState<MenuItems[]>(OrderTypes);
 
     const handleOrderTypeMenu = (e : SelectChangeEvent) => {
-    setOrderType(e.target.value);
-    console.log(orderType);
+        setFilterOrderType(e.target.value);
+        setOrderType(e.target.value);
     };
 
   return (
-    <Box sx={{ minWidth: 50 }}>
+    <Box sx={{ minWidth: 200 }}>
         <FormControl fullWidth>
-        <InputLabel>Order Type</InputLabel>
-        <Select
-            id="orderTypeId"
-            value={orderType}
-            label="OrderTypeLabel"
-            onChange={handleOrderTypeMenu}
-        >
-            {menuItems.map((item) => {
-            return (<MenuItem id={item.id} key={item.id} value={item.id}>{item.name}</MenuItem>)
-            })}
-        </Select>
+            <InputLabel>Order Type</InputLabel>
+            <Select
+                id="orderTypeId"
+                label="OrderTypeLabel"
+                value={orderType}
+                onChange={handleOrderTypeMenu}
+            >
+                {menuItems.map((item) => {
+                return (<MenuItem id={item.id} key={item.id} value={item.value}>{item.name}</MenuItem>)
+                })}
+            </Select>
         </FormControl>
     </Box>
   );

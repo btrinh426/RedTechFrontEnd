@@ -1,20 +1,26 @@
-import React from 'react';
-import { Button, Modal, Box } from '@mui/material';
+import React, { useState } from 'react';
+import { Button, Modal, Box, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 import { Formik, Form, Field } from 'formik';
 import AddIcon from '@mui/icons-material/Add'
 import MyField from './MyField';
+import OrderTypes from '../json/OrderType.json';
 
 interface Values {
     customerName: string;
     orderType: string;
     createdByUsername: string;
-}
+};
+
+interface MenuItems {
+    id: string,
+    name: string
+};
 
 interface Props {
     open: boolean;
     close: React.Dispatch<React.SetStateAction<Function>>
     onSubmit: (values: Values) => void;
-}
+};
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -31,6 +37,14 @@ const style = {
   };
 
 export const CreateOrder: React.FC<Props> = ({ onSubmit, open, close }) => {
+    // const [orderType, setOrderType] = useState<string>("")
+    const [menuItems] = useState<MenuItems[]>(OrderTypes);
+
+    // const handleOrderTypeMenu = (e : SelectChangeEvent) => {
+    //     console.log(e.target.value);
+    //     setOrderType(e.target.value)
+    // };
+
   return (
     <Modal
         open={open}
@@ -47,7 +61,14 @@ export const CreateOrder: React.FC<Props> = ({ onSubmit, open, close }) => {
                             <Field label="Customer Name" name="customerName" placeholder="Customer Name" component={MyField} />
                         </div>
                         <div>
-                            <Field label="Order Type" name="orderType" placeholder="Order Type" component={MyField} />
+                            <Field as="select" label="Order Type" name="orderType" placeholder="Order Type">
+                                <option disabled value="">Select Order Type</option>
+                                {menuItems.map((item) => {
+                                    return (
+                                        <option key={item.id} value={item.name}>{item.name}</option>
+                                    )
+                                })}
+                            </Field>
                         </div>
                         <div>
                             <Field label="Created By" name="createdByUsername" placeholder="Created By" component={MyField} />

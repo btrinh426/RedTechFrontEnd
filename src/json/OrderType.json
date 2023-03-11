@@ -1,0 +1,32 @@
+[
+    {
+        "id": "allOrders",
+        "name": "All Orders",
+        "value": ""
+    },
+    {
+      "id": "standardOrder",
+      "name": "Standard Order",
+      "value": "Standard Order"
+    },
+    {
+      "id": "purchaseOrder",
+      "name": "Purchase Order",
+      "value": "Purchase Order"
+    },
+    {
+      "id": "saleOrder",
+      "name": "Sale Order",
+      "value": "Sale Order"
+    },
+    {
+      "id": "returnOrder",
+      "name": "Return Order",
+      "value": "Return Order"
+    },
+    {
+      "id": "transferOrder",
+      "name": "Transfer Order",
+      "value": "Transfer Order"
+    }
+  ]

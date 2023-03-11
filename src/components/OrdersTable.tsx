@@ -1,5 +1,5 @@
-import React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import React, { useState, useEffect } from 'react';
+import { DataGrid, GridFilterModel } from '@mui/x-data-grid';
 
 type Order = {
   id: string,
@@ -7,18 +7,15 @@ type Order = {
   createdBy: string,
   orderType: string,
   customerName: string
-}
-
-type Rows = {
-  id: string
-}
+};
 
 interface Props {
-  orders: Order[]
-  setSelectedRows: React.Dispatch<React.SetStateAction<Rows[]>>
-}
+  orders: Order[];
+  setSelectedRows: React.Dispatch<React.SetStateAction<string[]>>;
+  filter: string;
+};
 
-export const OrdersTable: React.FC<Props> = ({ orders, setSelectedRows }) => {
+export const OrdersTable: React.FC<Props> = ({ orders, setSelectedRows, filter }) => {
 
     const columns: { field: string, headerName: string, width: number }[] = [
       { field: 'id', headerName: 'Order ID', width: 500 },
@@ -27,6 +24,26 @@ export const OrdersTable: React.FC<Props> = ({ orders, setSelectedRows }) => {
       { field: 'orderType', headerName: 'Order Type', width: 130 },
       { field: 'customerName', headerName: 'Customer', width: 130 },
     ];
+
+    const [filterModel, setFilterModel] = useState<GridFilterModel>({
+      items: [
+        {
+          field: 'orderType',
+          operator: 'equals',
+          value: ''
+        }
+      ]
+    })
+
+  useEffect(() => {
+    setFilterModel({
+      items: [{
+        field: 'orderType',
+        operator: 'equals',
+        value: filter
+      }]
+    });
+  }, [filter])
 
   const handleSelection = (selectedRow : any) => {
     setSelectedRows(selectedRow);
@@ -41,9 +58,11 @@ export const OrdersTable: React.FC<Props> = ({ orders, setSelectedRows }) => {
           columns={columns}
           checkboxSelection
           onRowSelectionModelChange={handleSelection}
+          filterModel={filterModel}
           style={{ cursor: "pointer" }}
         />
       </div>
+      {console.log(filterModel)}
     </>
   );
 };
