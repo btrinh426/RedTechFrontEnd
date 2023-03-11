@@ -5,6 +5,7 @@ import { Button, Modal, Box, Select, MenuItem, FormControl, InputLabel, SelectCh
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add'
 import { DataGrid } from '@mui/x-data-grid';
+import { Formik, Form } from 'formik';
 
 interface Orders {
   id: string,
@@ -150,8 +151,8 @@ const OrdersTable = () => {
   return (
     <>
       <div style={{ height: 400, width: '100%' }}>
-        <Button variant="contained" color="primary" startIcon={<DeleteIcon />} onClick={handleDeleteOrder}>DELETE SELECTED</Button>
-        <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleCreateModal}>CREATE ORDER</Button>
+        {/* <Button variant="contained" color="primary" startIcon={<DeleteIcon />} onClick={handleDeleteOrder}>DELETE SELECTED</Button>
+        <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={handleCreateModal}>CREATE ORDER</Button> */}
         <Box sx={{ minWidth: 50 }}>
                 <FormControl fullWidth>
                   <InputLabel>Order Type</InputLabel>
@@ -167,44 +168,6 @@ const OrdersTable = () => {
                   </Select>
                 </FormControl>
               </Box>
-        <Modal 
-          open={openModal}
-          onClose={handleCloseModal}
-          aria-labelledby="parent-modal-title"
-          aria-describedby="parent-modal-description"
-        >
-          <Box sx={{ ...style }}>
-            <h2 id="parent-modal-title">Create Order</h2>
-            <div id="parent-modal-description">
-            <form>
-              <label>
-                Customer Name:
-                <input type="text" name="customerName" value={customerName} onChange={handleCustomerName} />
-              </label>
-              <label>
-                Created By:
-                <input type="text" name="createdByUsername" value={createdByUsername} onChange={handleCreatedBy} />
-              </label>
-              <Box sx={{ minWidth: 120 }}>
-                <FormControl fullWidth>
-                  <InputLabel>Order Type</InputLabel>
-                  <Select
-                    id="orderTypeId"
-                    value={orderType}
-                    label="OrderTypeLabel"
-                    onChange={handleOrderTypeMenu}
-                  >
-                    {menuItems.map((item) => {
-                      return (<MenuItem id={item.id} key={item.id} value={item.id}>{item.name}</MenuItem>)
-                    })}
-                  </Select>
-                </FormControl>
-              </Box>
-              <Button onClick={handleSubmitOrder} variant="contained" color="primary" startIcon={<AddIcon />}>CREATE ORDER</Button>
-            </form>
-            </div>
-          </Box>
-        </Modal>
         <DataGrid
           rows={orders}
           columns={columns}
