@@ -4,11 +4,23 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Available Scripts
 
+### IMPORTANT: please add the following .env files in the project directory before running npm scripts.
+env.development
+
+
 In the project directory, you can run:
 
-### `npm start`
+### `npm run start:dev`
 
-Runs the app in the development mode.\
+Runs the app in the development mode.
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
+
+### `npm run start:prod`
+
+Runs the app in the production mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
