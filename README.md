@@ -6,7 +6,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### IMPORTANT: please add the following .env files in the project directory before running npm scripts.
 env.development
-
+env.production
 
 In the project directory, you can run:
 
