@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Login from './components/Login';
 import OrdersTable from './components/OrdersTable';
 import CreateOrder from './components/CreateOrder';
 import OrderTypeDropdown from './components/OrderTypeDropdown';
@@ -7,6 +8,7 @@ import SearchBar from './components/SearchBar';
 import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
+import PersonIcon from '@mui/icons-material/Person';
 
 import styles from './scss/app.module.scss';
 
@@ -37,14 +39,18 @@ const style = {
 function App() {
 
   const [orders, setOrders] = useState<Orders[]>([]);
-  const [filteredOrders, setFilteredOrders] = useState<Orders[]>(orders);
   const [filterOrderType, setFilterOrderType] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
+  const [showLoginForm, setShowLoginForm] = useState<boolean>(false);
   
   const openCreateOrderForm = () => {
     setShowCreateForm(!showCreateForm);
+  };
+
+  const openLoginForm = () => {
+    setShowLoginForm(!showLoginForm);
   };
 
   const handleDeleteOrder = () => {
@@ -73,6 +79,10 @@ function App() {
     }
   };
 
+  const handleLogin = async (username: string, password: string) => {
+    console.log('hit');
+  };
+
   useEffect(() => {
     console.log(searchQuery, 'searchquery');
   }, [searchQuery])
@@ -89,6 +99,10 @@ function App() {
     <>
       <div className={styles.wrapper}>
         <div className={styles.mainContainer}>
+          <div className={styles.navBarContainer}>
+            <Button variant="contained" color="primary" startIcon={<PersonIcon />} onClick={openLoginForm}>Login</Button>
+            <Login open={showLoginForm} close={openLoginForm} onSubmit={({ username, password }) => { handleLogin(username, password) }} />
+          </div>
           <div className={styles.buttonContainer}>
             <SearchBar setSearchQuery={setSearchQuery} />
             <Button sx={{ ...style.Button }} variant="contained" color="primary" startIcon={<AddIcon />} onClick={openCreateOrderForm}>CREATE ORDER</Button>

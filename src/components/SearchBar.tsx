@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { SelectChangeEvent } from '@mui/material/Select';
 
 interface Props {
   setSearchQuery: React.Dispatch<React.SetStateAction<string>>

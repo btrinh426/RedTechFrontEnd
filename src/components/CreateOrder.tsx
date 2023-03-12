@@ -18,7 +18,7 @@ interface MenuItems {
 
 interface Props {
     open: boolean;
-    close: React.Dispatch<React.SetStateAction<Function>>
+    close: React.Dispatch<React.SetStateAction<Function>>;
     onSubmit: (values: Values) => void;
 };
 
