@@ -3,13 +3,13 @@ import { Box, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } fro
 import OrderTypes from '../json/OrderType.json';
 
 interface Props {
-    setFilterOrderType: React.Dispatch<React.SetStateAction<string>>
+  setFilterOrderType: React.Dispatch<React.SetStateAction<string>>
 };
 
 interface MenuItems {
-    id: string,
-    name: string,
-    value: string
+  id: string,
+  name: string,
+  value: string
 };
 
 const style = {
@@ -23,13 +23,14 @@ const style = {
 };
 
 export const OrderTypeDropdown: React.FC<Props> = ({ setFilterOrderType }) => {
-    const [orderType, setOrderType] = useState<string>("")
-    const [menuItems] = useState<MenuItems[]>(OrderTypes);
 
-    const handleOrderTypeMenu = (e : SelectChangeEvent) => {
-        setFilterOrderType(e.target.value);
-        setOrderType(e.target.value);
-    };
+  const [orderType, setOrderType] = useState<string>("")
+  const [menuItems] = useState<MenuItems[]>(OrderTypes);
+
+  const handleOrderTypeMenu = (e : SelectChangeEvent) => {
+    setFilterOrderType(e.target.value);
+    setOrderType(e.target.value);
+  };
 
   return (
     <Box sx={{ minWidth: 200 }}>

@@ -37,7 +37,7 @@ const style = {
 function App() {
 
   const [orders, setOrders] = useState<Orders[]>([]);
-  // const [filteredOrders, setFilteredOrders] = useState<Orders[]>(orders);
+  const [filteredOrders, setFilteredOrders] = useState<Orders[]>(orders);
   const [filterOrderType, setFilterOrderType] = useState<string>("");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
@@ -57,22 +57,6 @@ function App() {
       .catch((err) => console.log(err))
   };
 
-  // const filterOrdersByType = () => {
-  //   const filtered = filteredOrders.filter((order) => {
-  //     return (order.orderType === filterOrderType)
-  //   });
-  //   console.log(filtered);
-  //   setFilteredOrders(filtered);
-  // };
-
-  // const filterOrdersBySearch = () => {
-  //   const filtered = orders.filter((order) => {
-  //     return order.id === searchQuery
-  //   });
-  //   console.log(filtered);
-  //   setFilteredOrders(filtered);
-  // };
-
   const submitNewOrder = async (customerName : string, orderType : string, createdByUsername : string) => {
     const url = `${process.env.REACT_APP_BASE_URL}/api/Order/`;
     const data = { customerName, orderType, createdByUsername };
@@ -88,6 +72,10 @@ function App() {
       console.log('unsuccessful');
     }
   };
+
+  useEffect(() => {
+    console.log(searchQuery, 'searchquery');
+  }, [searchQuery])
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_BASE_URL}/api/Order/`)
@@ -108,7 +96,7 @@ function App() {
             <OrderTypeDropdown setFilterOrderType={setFilterOrderType} />
           </div>
           <div className={styles.tableContainer}>
-            <OrdersTable orders={orders} filter={filterOrderType} setSelectedRows={setSelectedRows} />
+            <OrdersTable orders={orders} filter={filterOrderType} searchQuery={searchQuery} setSelectedRows={setSelectedRows} />
           </div>
           <CreateOrder open={showCreateForm} close={openCreateOrderForm} onSubmit={({ customerName, orderType, createdByUsername }) => {
             submitNewOrder(customerName, orderType, createdByUsername)

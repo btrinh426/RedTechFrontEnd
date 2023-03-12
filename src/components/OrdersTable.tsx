@@ -13,27 +13,38 @@ interface Props {
   orders: Order[];
   setSelectedRows: React.Dispatch<React.SetStateAction<string[]>>;
   filter: string;
+  searchQuery: string;
 };
 
-export const OrdersTable: React.FC<Props> = ({ orders, setSelectedRows, filter }) => {
+export const OrdersTable: React.FC<Props> = ({ orders, setSelectedRows, filter, searchQuery }) => {
 
-    const columns: { field: string, headerName: string, width: number }[] = [
-      { field: 'id', headerName: 'Order ID', width: 500 },
-      { field: 'createdDate', headerName: 'Creation Date', width: 250 },
-      { field: 'createdByUsername', headerName: 'Created By', width: 130 },
-      { field: 'orderType', headerName: 'Order Type', width: 130 },
-      { field: 'customerName', headerName: 'Customer', width: 130 },
-    ];
+  const columns: { field: string, headerName: string, width: number }[] = [
+    { field: 'id', headerName: 'Order ID', width: 500 },
+    { field: 'createdDate', headerName: 'Creation Date', width: 250 },
+    { field: 'createdByUsername', headerName: 'Created By', width: 130 },
+    { field: 'orderType', headerName: 'Order Type', width: 130 },
+    { field: 'customerName', headerName: 'Customer', width: 130 },
+  ];
 
-    const [filterModel, setFilterModel] = useState<GridFilterModel>({
-      items: [
-        {
-          field: 'orderType',
-          operator: 'equals',
-          value: ''
-        }
-      ]
-    })
+  const [filterModel, setFilterModel] = useState<GridFilterModel>({
+    items: [
+      {
+        field: 'orderType',
+        operator: 'equals',
+        value: ''
+      }
+    ]
+  });
+
+  useEffect(() => {
+    setFilterModel({
+      items: [{
+        field: 'id',
+        operator: 'equals',
+        value: searchQuery
+      }]
+    });
+  }, [searchQuery]);
 
   useEffect(() => {
     setFilterModel({
@@ -43,7 +54,7 @@ export const OrdersTable: React.FC<Props> = ({ orders, setSelectedRows, filter }
         value: filter
       }]
     });
-  }, [filter])
+  }, [filter]);
 
   const handleSelection = (selectedRow : any) => {
     setSelectedRows(selectedRow);
@@ -62,7 +73,6 @@ export const OrdersTable: React.FC<Props> = ({ orders, setSelectedRows, filter }
           style={{ cursor: "pointer" }}
         />
       </div>
-      {console.log(filterModel)}
     </>
   );
 };

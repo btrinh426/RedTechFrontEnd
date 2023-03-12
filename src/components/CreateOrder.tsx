@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Modal, Box, InputLabel, Select, MenuItem, SelectChangeEvent } from '@mui/material';
+import { Button, Modal, Box } from '@mui/material';
 import { Formik, Form, Field } from 'formik';
 import AddIcon from '@mui/icons-material/Add'
 import MyField from './MyField';
@@ -37,13 +37,8 @@ const style = {
   };
 
 export const CreateOrder: React.FC<Props> = ({ onSubmit, open, close }) => {
-    // const [orderType, setOrderType] = useState<string>("")
-    const [menuItems] = useState<MenuItems[]>(OrderTypes);
 
-    // const handleOrderTypeMenu = (e : SelectChangeEvent) => {
-    //     console.log(e.target.value);
-    //     setOrderType(e.target.value)
-    // };
+    const [menuItems] = useState<MenuItems[]>(OrderTypes);
 
   return (
     <Modal
